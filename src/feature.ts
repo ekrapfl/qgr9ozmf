@@ -1,6 +1,6 @@
 import {
+  localStorageStrategy,
   providePersistState,
-  sessionStorageStrategy,
 } from '@ngrx-addons/persist-state';
 import { includeKeys } from '@ngrx-addons/common';
 import { provideSyncState } from '@ngrx-addons/sync-state';
@@ -14,15 +14,12 @@ import {
 
 export const globalAction = createAction('[All] Global Action');
 
-const stateA = {
-  a: 0,
-  control: 'test',
-};
+const state = { a: 0 };
 
-export const featureA = createFeature({
-  name: 'a',
+export const feature = createFeature({
+  name: 'someFeature',
   reducer: createReducer(
-    stateA,
+    state,
     on(globalAction, (state) => {
       console.log('Reducer A');
       return {
@@ -34,20 +31,24 @@ export const featureA = createFeature({
 });
 
 export const featureAProviders = [
-  provideState(featureA),
+  provideState(feature),
   providePersistState({
-    key: featureA.name,
+    key: feature.name,
     states: [
       {
-        storage: sessionStorageStrategy,
+        storage: localStorageStrategy,
+        storageKey: "feature@store",
       },
     ],
   }),
-  provideSyncState<typeof stateA>({
-    key: featureA.name,
+  provideSyncState<typeof state>({
+    key: feature.name,
     states: [
       {
-        source: (state$) => state$.pipe(includeKeys(['control', 'a'])),
+        // Neither of these settings seem to make a difference, really.
+        // The issue persists with either, both, or neither of these settings enabled.
+        source: (state$) => state$.pipe(includeKeys(['a'])),
+        // skip: 0,
       },
     ],
   }),
