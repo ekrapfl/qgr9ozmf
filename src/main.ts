@@ -36,7 +36,9 @@ bootstrapApplication(DemoComponent, {
   providers: [
     provideAppInitializer(appInitializer),
     provideStore({}, { metaReducers: [] }),
+    // TODO: The manual rehydration strategy is necessary to cause the bug
     providePersistStore({ strategy: ManualRehydration }),
+    // The manual sync initialization can be take out and you will still see the bug
     provideSyncStore({ strategy: ManualSyncInitialization }),
     [...featureAProviders],
   ],

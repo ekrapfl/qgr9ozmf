@@ -4,8 +4,6 @@ import { InitializationStrategy } from "@ngrx-addons/common";
 import { storeRehydrateAction } from "@ngrx-addons/persist-state";
 import { filter, first, firstValueFrom, Observable, ReplaySubject } from "rxjs";
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 /**
  * Strategy for waiting to sync state until we tell it we are ready.
  * We don't want to start syncing state from another tab or pushing state to another tab
@@ -89,8 +87,8 @@ export const appInitializer = async () => {
   const manualRehydrationStrategy = inject(ManualRehydration);
   const manualSyncInitialization = inject(ManualSyncInitialization);
 
-  await sleep(2000);
-
+  // TODO: The manual rehydration strategy is necessary to cause the bug
   await manualRehydrationStrategy.rehydrate();
+  // The manual sync initialization can be take out and you will still see the bug
   manualSyncInitialization.startSyncing();
 };
