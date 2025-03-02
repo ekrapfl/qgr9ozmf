@@ -15,7 +15,7 @@
     "@angular/forms": "^19.0.0",
     "@angular/platform-browser": "^19.0.0",
     "@ngrx-addons/persist-state": "^8.0.0",
-    "@ngrx-addons/sync-state": "^8.0.0",
+    "@ngrx-addons/sync-state": "^8.0.1",
     "@ngrx/effects": "^19.0.1",
     "@ngrx/store": "^19.0.1",
     "rxjs": "~7.8.0",
